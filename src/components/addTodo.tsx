@@ -6,20 +6,30 @@ import Typography from "@mui/material/Typography";
 import { Search, SearchIconWrapper, StyledInputBase } from "./styledMui";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addTodo } from "../store/slices/todoSlice";
+import { addTodo, todo } from "../store/slices/todoSlice";
 import { v4 as uuidv4 } from "uuid";
 
 
-const AddTodo = () => {
+export type localPropType = {
+  setLocalStore :React.Dispatch<React.SetStateAction<todo[]>>,
+};
 
+const AddTodo = (props: localPropType) => {
+  const { setLocalStore } = props; 
   const [todoDraft, setTodoDraft] = React.useState("");
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const handleAddToast= () => {
-    if(!todoDraft) return
-    dispatch(addTodo({ task: todoDraft, completed: false, id: uuidv4()}));
-    setTodoDraft("")
-  }
+  const handleAddToast = () => {
+    if (!todoDraft) return;
+    const todo = { task: todoDraft, completed: false, id: uuidv4() };
+    dispatch(addTodo(todo));
+    setLocalStore((prev) => {
+      const newTodo = [...prev];
+      newTodo.push(todo);
+      return newTodo;
+    });
+    setTodoDraft("");
+  };
 
   return (
     <>

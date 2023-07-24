@@ -7,18 +7,21 @@ import {
   deleteTodo,
 } from "../store/slices/todoSlice";
 import { Button, Checkbox, Typography } from '@mui/material';
+import { localPropType } from './addTodo';
 
 
-const Todos = () => {
+const Todos = (props: localPropType) => {
+  const { setLocalStore } = props; 
   const todo = useSelector(selectTodo);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const pendingTodo = todo.list.filter((i) => !i.completed);
   const completedTodo = todo.list.filter((i) => i.completed);
 
   const handleDeleteTodo = (id: string) => {
     dispatch(deleteTodo(id));
-  }
+    setLocalStore((prev) => prev.filter((i) => i.id !== id));
+  };
 
   return (
     <div>
@@ -54,6 +57,12 @@ const Todos = () => {
               <Checkbox
                 onChange={() => {
                   dispatch(markTodoAsCompleted(i.id));
+                  setLocalStore((prev) => {
+                    const newPrev = [...prev];
+                    const index = newPrev.findIndex((j) => i.id === j.id);
+                    newPrev[index].completed = true;
+                    return newPrev;
+                  });
                 }}
               />
               <Typography
@@ -112,6 +121,12 @@ const Todos = () => {
                 defaultChecked
                 onChange={() => {
                   dispatch(markTodoAsIncomplete(i.id));
+                  setLocalStore((prev) => {
+                    const newPrev = [...prev];
+                    const index = newPrev.findIndex((j) => i.id === j.id);
+                    newPrev[index].completed = false;
+                    return newPrev;
+                  });
                 }}
               />
               <Typography
@@ -137,6 +152,6 @@ const Todos = () => {
       )}
     </div>
   );
-}
+};
 
 export default Todos

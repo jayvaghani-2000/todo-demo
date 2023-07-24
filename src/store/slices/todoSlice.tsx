@@ -2,18 +2,21 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 
 
-interface todo {
+export type todo = {
   task: string;
   id: string;
-  completed: boolean; 
+  completed: boolean;
 }
-interface todoList {
+type todoList = {
   list: todo[]
 }
 
-const initialState :todoList ={
-  list: []
-}
+const initialState: todoList = {
+  list:
+    localStorage.getItem("todo") 
+      ? JSON.parse(localStorage.getItem("todo")!)
+      : [],
+};
 
 export const todoSlice = createSlice({
   name: "todo",
@@ -32,7 +35,7 @@ export const todoSlice = createSlice({
     },
     deleteTodo: (state, action: PayloadAction<string>) => {
       const todoIndex = state.list.findIndex((i) => i.id === action.payload);
-      state.list.splice(todoIndex, 1)
+      state.list.splice(todoIndex, 1);
     },
   },
 });
