@@ -9,13 +9,12 @@ import { useDispatch } from "react-redux";
 import { addTodo, todo } from "../store/slices/todoSlice";
 import { v4 as uuidv4 } from "uuid";
 
-
 export type localPropType = {
-  setLocalStore :React.Dispatch<React.SetStateAction<todo[]>>,
+  setLocalStore: React.Dispatch<React.SetStateAction<todo[]>>;
 };
 
 const AddTodo = (props: localPropType) => {
-  const { setLocalStore } = props; 
+  const { setLocalStore } = props;
   const [todoDraft, setTodoDraft] = React.useState("");
   const dispatch = useDispatch();
 
@@ -29,6 +28,10 @@ const AddTodo = (props: localPropType) => {
       return newTodo;
     });
     setTodoDraft("");
+  };
+
+  const handleUpdateTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTodoDraft(e.target.value);
   };
 
   return (
@@ -47,9 +50,7 @@ const AddTodo = (props: localPropType) => {
             <Search>
               <SearchIconWrapper></SearchIconWrapper>
               <StyledInputBase
-                onChange={(e) => {
-                  setTodoDraft(e.target.value);
-                }}
+                onChange={handleUpdateTitle}
                 placeholder="New Task"
                 inputProps={{ "aria-label": "search" }}
                 value={todoDraft}

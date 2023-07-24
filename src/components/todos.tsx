@@ -11,7 +11,7 @@ import { localPropType } from './addTodo';
 import {cloneDeep} from "lodash";
 
 
-const Todos = (props: localPropType) => {
+const Todo = (props: localPropType) => {
   const { setLocalStore } = props; 
   const todo = useSelector(selectTodo);
   const dispatch = useDispatch();
@@ -155,4 +155,4 @@ const Todos = (props: localPropType) => {
   );
 };
 
-export default Todos
+export default Todo
