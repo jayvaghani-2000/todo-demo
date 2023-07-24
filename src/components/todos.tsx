@@ -8,6 +8,7 @@ import {
 } from "../store/slices/todoSlice";
 import { Button, Checkbox, Typography } from '@mui/material';
 import { localPropType } from './addTodo';
+import {cloneDeep} from "lodash";
 
 
 const Todos = (props: localPropType) => {
@@ -58,7 +59,7 @@ const Todos = (props: localPropType) => {
                 onChange={() => {
                   dispatch(markTodoAsCompleted(i.id));
                   setLocalStore((prev) => {
-                    const newPrev = [...prev];
+                    const newPrev =  cloneDeep(prev)
                     const index = newPrev.findIndex((j) => i.id === j.id);
                     newPrev[index].completed = true;
                     return newPrev;
@@ -122,7 +123,7 @@ const Todos = (props: localPropType) => {
                 onChange={() => {
                   dispatch(markTodoAsIncomplete(i.id));
                   setLocalStore((prev) => {
-                    const newPrev = [...prev];
+                    const newPrev = cloneDeep(prev);
                     const index = newPrev.findIndex((j) => i.id === j.id);
                     newPrev[index].completed = false;
                     return newPrev;
